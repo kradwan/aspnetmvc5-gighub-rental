@@ -1,0 +1,214 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/*added by me for validation by KEF*/
+span.field-validation-error {
+    color: red;
+    font-weight: bold;
+}
+
+/*Vertical offset for elemets KEF*/
+.voffset {
+    margin-top: 2px;
+}
+
+.voffset1 {
+    margin-top: 5px;
+}
+
+.voffset2 {
+    margin-top: 10px;
+}
+
+.voffset3 {
+    margin-top: 20px;
+}
+
+.voffset4 {
+    margin-top: 40px;
+}
+
+.voffset5 {
+    margin-top: 80px;
+}
+
+
+/* Bootstraps Overrides */
+// Color variables (appears count calculates by raw css)
+@color0: #bf3636; // Appears 2 times
+@color1: #ff4342; // Appears 2 times
+@color2: #ffffff; // Appears 2 times
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+
+  src: url('fonts/glyphicons-halflings-regular.eot');
+  src: url('fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('fonts/glyphicons-halflings-regular.woff') format('woff'), url('fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.navbar-inverse {
+	background-color: @color1;
+	border-color: @color1;
+	.navbar-brand {
+		color: @color2;
+	}
+	.navbar-nav>li>a {
+		color: @color2;
+	}
+	.navbar-nav>.open>a {
+		background-color: rgba(218, 57, 56, 0.55);
+		&:hover {
+			background-color: rgba(218, 57, 56, 0.55);
+		}
+		&:focus {
+			background-color: rgba(218, 57, 56, 0.55);
+		}
+	}
+}
+body, .tooltip, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6  {
+	font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.form-group {
+	margin-bottom: 20px;
+}
+body {
+	font-size: 22px;
+}
+.form-control {
+	font-size: 17px;
+	height: 44px;
+	&:focus {
+		-webkit-box-shadow: none;
+		border-color: #66e1e9;
+		box-shadow: none;
+		outline: 0;
+	}
+}
+.navbar-brand {
+	font-weight: 700;
+}
+.navbar-right {
+	.notifications {
+		position: relative;
+		.badge {
+			background-color: @color0;
+			background: @color0;
+			position: absolute;
+			right: -1px;
+			top: 8px;
+		}
+	}
+}
+
+/* Page-level styles */
+.gigs {
+	list-style: none;
+}
+.gigs>li {
+	margin: 30px;
+	position: relative;
+	.date {
+		-ms-border-radius: 8px;
+		background: red;
+		border-radius: 8px;
+		color: white;
+		text-align: center;
+		width: 60px;
+		.month {
+			font-size: 14px;
+			font-weight: bold;
+			padding: 2px 6px;
+			text-transform: uppercase;
+		}
+		.day {
+			background: #f7f7f7;
+			color: #333333;
+			font-size: 20px;
+			padding: 6px 12px;
+		}
+	}
+	.details {
+		left: 70px;
+		position: absolute;
+		top: 0;
+		.artist {
+			display: block;
+			font-weight: bold;
+		}
+		.genre {
+			font-size: 15px;
+            display:block; 
+            margin-bottom:4px;
+		}
+	}
+	.actions {
+		display: none;
+		font-size: 14px;
+	}
+	&:hover {
+		.actions {
+			display: block;
+		}
+	}
+}
+
+.popover-notifications {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+
+    .popover-content {
+        padding: 0;
+    }
+
+    ul.notifications-template {
+        list-style: none;
+        padding-left: 0;
+        //added AutoScroll
+        height: auto; 
+        max-height: 200px;
+        overflow: auto;
+
+        > li {
+            border-bottom: 1px solid #333333;
+            padding: 10px;
+
+            .highlight {
+                font-weight: bold;
+            }
+        }
+
+        > li:last-child {
+            border-bottom: none;
+        }
+    }
+}
+
+div#searchGigs {
+	-webkit-box-shadow: none;
+	-webkit-transition: none;
+	box-shadow: none;
+	transition: none;
+	width: 250px;
+}

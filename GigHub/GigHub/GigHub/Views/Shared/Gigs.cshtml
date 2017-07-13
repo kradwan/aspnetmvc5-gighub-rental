@@ -1,0 +1,81 @@
+﻿@model GigHub.Core.ViewModels.GigsViewModel
+@{
+    ViewBag.Title = "Gigs Page";
+}
+
+<h2>@Model.Heading</h2>
+@using (Html.BeginForm("Search", "Gigs"))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <div id="searchGigs" class="input-group">
+            @Html.TextBoxFor(m => m.SearchTerm,
+           new
+           {
+               id = "searchTerm",
+               @class = "form-control",
+               autofocus = "autofocus",
+               placeholder = "Search for artist, genre..."
+           })
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+        </div>
+    </div>
+    @*<input type="submit" value="Search" />*@
+}
+
+<ul id="gigs" class="gigs voffset4">
+    @foreach (var gig in Model.UpcomingGigs)
+    {
+
+        bool isAttending = Model.Attendances.Contains(gig.Id);
+
+        <li>
+            <div class="date">
+                <div class="month">
+                    @gig.DateTime.ToString("MMM")
+                </div>
+                <div class="day">
+                    @gig.DateTime.ToString("d ") @*d represents short date but when you add a space then it can be just a day*@
+                </div>
+            </div>
+            <div class="details">
+                <span class="artist">
+                    <a href="@Url.Action("Details", "Gigs", new {id = gig.Id})">
+                        @gig.Artist.Name
+                    </a>
+
+                    @if (gig.IsCancelled)
+                    {
+                        <label class="label label-warning">Canceled</label>
+                    }
+                    
+                </span>
+
+                <span class="genre">
+                    @gig.Genre.Name
+                </span>
+                @if (Model.ShowActions && !gig.IsCancelled)
+                {
+                    <button data-gig-id="@gig.Id"
+                            class="btn btn-sm pull-left js-toggle-attendace
+                            @(isAttending ? "btn-info" : "btn-default" )">
+                        @(isAttending ? "Going" : "Going ?" )
+                    </button>
+                }
+            </div>
+        </li>
+    }
+</ul>
+
+
+
+@section scripts{
+    <script>
+        $(document)
+            .ready(function() {
+                GigController.init("#gigs");
+            });
+    </script>
+}

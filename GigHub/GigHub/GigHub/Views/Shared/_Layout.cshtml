@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @*I added new fonts from google*@
+    @*from https://fonts.google.com/fonts*@
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("GigHub", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Add a Gig", "Create", "Gigs")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+    
+    @Scripts.Render("~/bundles/lib")
+    @Scripts.Render("~/bundles/app")    
+
+    @RenderSection("scripts", required: false)
+
+    @*Here we have a HTML template which will be rendered as a popover*@
+<script type="text/x-template" id="notifiactions-template">
+    <ul class="notifications-template">
+        <%
+        _.each(notifications, function(notification)
+        {
+        if(notification.type == 1){
+        %>
+        <li>
+            <span class="highlight"><%= notification.gig.artist.name %></span> has canceled the gig at
+            <%= notification.gig.venue %> on
+            <%= moment(notification.gig.dateTime).format("D MMM HH:mm") %> @*formating datetimes thanks to moment.js lib*@
+        </li>
+        <%
+        }
+
+        if(notification.type == 2){
+        @*Display changes which where made during the update, user could have changed 1.Only venue, 2.Only date/time 3.Venue or Date/Time etc.*@
+        var changes = [],
+        originalValues = [],
+        newValues = [];
+
+            if(notification.originalVenue != notification.gig.venue){
+            changes.push("venue");
+            originalValues.push(notification.originalVenue);
+            newValues.push(notification.gig.venue);
+            }
+
+            if(notification.originalDateTime != notification.gig.dateTime){
+            changes.push("date/time");
+            originalValues.push(moment(notification.originalDateTime).format("D MMM HH:mm"));
+            newValues.push(moment(notification.gig.dateTime).format("D MMM HH:mm"));
+            }
+
+        if(changes.length > 0){
+        %>
+        <li>
+            <span class="highlight">
+                <%= notification.gig.artist.name %>
+            </span> has changed the
+                <%= changes.join(" and ") %> of the gig from
+                <%= originalValues.join("/") %> to
+                <%= newValues.join("/") %>
+</li>
+        <%
+        }
+        }
+
+        if(notification.type == 3){
+            %>
+            <li>
+                <span class="highlight">
+                    <%= notification.gig.artist.name %>
+                </span> has created the gig at
+                <%= notification.gig.venue %> on
+                <%= moment(notification.gig.dateTime).format("D MMM HH:mm") %>
+            </li>
+            <%
+            }
+        })
+        %>
+    </ul>
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var notifCountBtn = $(".js-notifications-count");
+            var notificationsBtn = $(".notifications");
+            var notificationsCount = 0;
+
+            $.getJSON("/API/Notifications",
+                function (notifications) {
+                    notificationsCount = notifications.length;
+
+                    if (notificationsCount == 0) {
+                        return;
+                    }
+
+                    notifCountBtn
+                        .text(notificationsCount)
+                        .removeClass("hide")
+                        .addClass("animated bounceInDown");
+
+                    notificationsBtn.popover({ //from http://getbootstrap.com/javascript/#popovers
+                        html: true,
+                        title: function () {
+                            if (notificationsCount > 1) {
+                                return "Notifications";
+                            } else {
+                                return "Notification";
+                            }
+                        },
+                        content: function () {
+                            var compiled = _.template($("#notifiactions-template").html()); //compiled var is function
+                            return compiled({ notifications: notifications });//therefore we can add params to the function
+                        },
+                        placement: "bottom",
+                        trigger: "click",
+                        template: '<div class="popover popover-notifications" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+                    });
+
+                });
+        })
+    </script>
+</body>
+</html>

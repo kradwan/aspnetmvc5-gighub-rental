@@ -1,0 +1,20 @@
+﻿@model GigHub.Core.ViewModels.FollowingViewModel
+@{
+    ViewBag.Title = "Following";
+}
+
+<h2>Following artist</h2>
+
+<ul class="following">
+    @foreach (var artist in Model.Followees)
+    {
+        <li>
+            <div class="details">
+                <span class="artist">
+                    @artist.Name
+                    <button data-follow-id="@artist.Id" class="btn btn-link btn-sm pull-right js-toggle-following">Follow</button>
+                </span>
+            </div>
+        </li>
+    }
+</ul>
